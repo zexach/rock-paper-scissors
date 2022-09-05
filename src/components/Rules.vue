@@ -7,7 +7,7 @@
 
 <style scoped>
     .rules-container{
-        width: 85%;
+        width: 500px;
         height: 520px;
         display: flex;
         flex-direction: column;
@@ -28,5 +28,11 @@
     }
     img{
         width: 300px;
+    }
+    @media screen and (max-width: 500px) {
+        .rules-container{
+            width: 340px;
+            height: 520px;
+        }
     }
 </style>

@@ -11,6 +11,7 @@
   const myPick = ref('')
   const opponentPick = ref('')
   const result = ref('')
+  const roundFinished = ref(null)
 
   const paperPick = () => {
     isScissorsPick.value = false
@@ -32,7 +33,6 @@
 
   const randomCompPick = () => {
     opponentPick.value = choices[Math.floor(Math.random() * choices.length)]
-    console.log(opponentPick.value)
   }
 
   
@@ -90,13 +90,15 @@
         <h2 class="score-value">{{score}}</h2>
       </div>
     </div>
-    <div class="rock-paper-scissors">
+    <div class="rock-paper-scissors" :disabled="showRules">
       <h3 v-if="!isPaperPick || !isScissorsPick || !isRockPick">YOUR PICK</h3>
-      <div @click="paperPick(), randomCompPick(), getResult()" :class="{'hidden': !isPaperPick}" class="circle paper">
-        <img src="./img/icon-paper.svg" alt="">
+      <div class="first-column">
+        <div @click="paperPick(), randomCompPick(), getResult()" :class="{'hidden': !isPaperPick}" :disabled="isPaperPick" class="circle paper">
+          <img src="./img/icon-paper.svg" alt="">
+        </div>
+        <div @click="scissorsPick(), randomCompPick(), getResult()" :class="{'hidden': !isScissorsPick}" class="circle scissors">
+          <img src="./img/icon-scissors.svg" alt="">
       </div>
-      <div @click="scissorsPick(), randomCompPick(), getResult()" :class="{'hidden': !isScissorsPick}" class="circle scissors">
-        <img src="./img/icon-scissors.svg" alt="">
       </div>
       <div @click="rockPick(), randomCompPick(), getResult()" :class="{'hidden': !isRockPick}" class="circle rock">
         <img src="./img/icon-rock.svg" alt="">
@@ -125,6 +127,11 @@
 </template>
 
 <style scoped>
+  .first-column{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
   .result{
     width: 80%;
     display: flex;
@@ -178,7 +185,7 @@
     width: 100%;
     min-height: 200px;
     display: flex; 
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
@@ -223,7 +230,7 @@
     }
     .opponent-pick{
      display: flex;
-     flex-direction: row;
+     flex-direction: column-reverse;
      align-items: center;
     }
     .circle:hover{
@@ -264,4 +271,17 @@
     background-color: white;
     color: black
    }
+   @media screen and (min-width: 860px) {
+    .circle{
+     width: 180px;
+     height: 180px;
+    }
+    .circle:hover{
+    width: 220px;
+    height: 220px;
+   }
+   img{
+    width: 80px;
+   }
+  }
 </style>
