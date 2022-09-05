@@ -3,27 +3,30 @@
   import Rules from './components/Rules.vue';
   
   const showRules = ref(false)
-  const score = ref(10)
+  const score = ref(0)
   const choices = ['rock','paper','scissors']
-  const isPaperPick = ref(false)
-  const isRockPick = ref(false)
-  const isScissorsPick = ref(false)
+  const isPaperPick = ref(true)
+  const isRockPick = ref(true)
+  const isScissorsPick = ref(true)
   const myPick = ref('')
   const opponentPick = ref('')
   const result = ref('')
 
   const paperPick = () => {
-    isPaperPick.value = true
+    isScissorsPick.value = false
+    isRockPick.value = false
     myPick.value = choices[1]
   }
 
   const scissorsPick = () => {
-    isScissorsPick.value = true
+    isPaperPick.value = false
+    isRockPick.value = false
     myPick.value = choices[2]
   }
 
   const rockPick = () => {
-    isRockPick.value = true
+    isScissorsPick.value = false
+    isPaperPick.value = false
     myPick.value = choices[0]
   }
 
@@ -32,6 +35,7 @@
     console.log(opponentPick.value)
   }
 
+  
   const getResult = () => {
     switch(myPick.value){
       case 'rock':
@@ -64,10 +68,17 @@
           score.value += 1
         }
         break
+      }
     }
-  }
-
-</script>
+    
+    const resetRound = () => {
+      myPick.value = null
+      opponentPick.value = null
+      isPaperPick.value = true
+      isScissorsPick.value = true
+      isRockPick.value = true
+    }
+  </script>
 
 <template>
   <div class="container">
@@ -80,25 +91,47 @@
       </div>
     </div>
     <div class="rock-paper-scissors">
-      <div @click="paperPick(), randomCompPick(), getResult()" class="circle paper">
+      <h3 v-if="!isPaperPick || !isScissorsPick || !isRockPick">YOUR PICK</h3>
+      <div @click="paperPick(), randomCompPick(), getResult()" :class="{'hidden': !isPaperPick}" class="circle paper">
         <img src="./img/icon-paper.svg" alt="">
       </div>
-      <div @click="scissorsPick(), randomCompPick(), getResult()" class="circle scissors">
-      <img src="./img/icon-scissors.svg" alt="">
+      <div @click="scissorsPick(), randomCompPick(), getResult()" :class="{'hidden': !isScissorsPick}" class="circle scissors">
+        <img src="./img/icon-scissors.svg" alt="">
       </div>
-      <div @click="rockPick(), randomCompPick(), getResult()" class="circle rock">
+      <div @click="rockPick(), randomCompPick(), getResult()" :class="{'hidden': !isRockPick}" class="circle rock">
         <img src="./img/icon-rock.svg" alt="">
       </div>
     </div>
+    <div v-if="!isPaperPick || !isScissorsPick || !isRockPick" class="opponent-pick">
+      <h3>OPPONENT PICK</h3>
+      <div v-if="opponentPick === 'paper'" class="circle paper">
+        <img src="./img/icon-paper.svg" alt="">
+      </div>
+      <div v-if="opponentPick === 'scissors'" class="circle scissors">
+        <img src="./img/icon-scissors.svg" alt="">
+      </div>
+      <div v-if="opponentPick === 'rock'" class="circle rock">
+        <img src="./img/icon-rock.svg" alt="">
+      </div>
+    </div>
+    <div class="result" v-if="myPick != null">
+      <h1 class="result">{{result}}</h1>
+      <button class="result-btn" v-if="!isPaperPick || !isScissorsPick || !isRockPick" @click="resetRound">PLAY AGAIN</button>
+    </div>
     <div class="rules">
-      <h1>{{result}}</h1>
-      <h6>{{opponentPick}}</h6>
       <button @click="showRules = !showRules">{{showRules ? 'CLOSE RULES' : 'RULES'}}</button>
     </div>
   </div>
 </template>
 
 <style scoped>
+  .result{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
    .container{
     width: 100%;
     height: 100vh;
@@ -143,29 +176,59 @@
    }
    .rock-paper-scissors{
     width: 100%;
-    height: 400px;
+    min-height: 200px;
     display: flex; 
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
    }
-   .circle{
-    width: 130px;
-    height: 130px;
-    margin: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    background-color: rgb(235, 235, 235);
+   .result{
+    font-size: 30px;
+    font-weight: 700;
+   }
+   .result-btn{
+    width: 200px;
+    padding: 15px;
+    background-color: white;
+    border: 1px solid rgb(208, 208, 208);
+    border-radius: 5px;
+    color: black;
+    font-size: 18px;
+    font-weight: 600;
     cursor: pointer;
     transition: 0.4s;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
    }
-   .circle:hover{
-    width: 140px;
-    height: 140px;
+   .result-btn:hover{
+    width: 250px;
+    padding: 20px;
+    background-color: transparent;
+    color: white;
+   }
+   h3{
+    font-weight: 700;
+   }
+   .circle{
+     width: 120px;
+     height: 120px;
+     margin: 25px 25px;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     border-radius: 50%;
+     background-color: rgb(235, 235, 235);
+     cursor: pointer;
+     transition: 0.3s;
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    .opponent-pick{
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+    }
+    .circle:hover{
+    width: 150px;
+    height: 150px;
    }
    .rock{
     border: 10px solid rgb(246, 67, 67)
@@ -176,9 +239,9 @@
    .scissors{
     border: 10px solid rgb(251, 188, 52)
   }
-  .hidden{
+   .hidden{
     display: none;
-  }
+  } 
    .rules{
     width: 100%;
     display: flex;
@@ -186,7 +249,7 @@
     align-items: center;
    }
    button{
-    width: 25%;
+    width: 120px;
     padding: 10px;
     background-color: transparent;
     border: 1px solid rgb(208, 208, 208);
@@ -194,9 +257,10 @@
     color: white;
     cursor: pointer;
     transition: 0.4s;
+    font-weight: 600;
    }
    button:hover{
-    width: 30%;
+    width: 160px;
     background-color: white;
     color: black
    }

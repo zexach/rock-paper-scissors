@@ -7,11 +7,11 @@
 
 <style scoped>
     .rules-container{
-        width: 70%;
-        height: 300px;
+        width: 85%;
+        height: 580px;
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
+        justify-content: center;
         align-items: center;
         border-radius: 5px;
         background-color: rgb(235, 235, 235);
@@ -22,9 +22,11 @@
         z-index: 1;
         }
     h1{
+        font-size: 40px;
         font-weight: 600;
+        margin-bottom: 50px;
     }
     img{
-        width: 70%;
+        width: 90%;
     }
 </style>
