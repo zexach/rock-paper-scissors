@@ -8,7 +8,7 @@
 <style scoped>
     .rules-container{
         width: 85%;
-        height: 580px;
+        height: 520px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -27,6 +27,6 @@
         margin-bottom: 50px;
     }
     img{
-        width: 90%;
+        width: 300px;
     }
 </style>
