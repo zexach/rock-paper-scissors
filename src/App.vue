@@ -103,7 +103,7 @@
       </div>
     </div>
     <div v-if="!isPaperPick || !isScissorsPick || !isRockPick" class="opponent-pick">
-      <h3>OPPONENT PICK</h3>
+      <h3>OPPONENT'S PICK</h3>
       <div v-if="opponentPick === 'paper'" class="circle paper">
         <img src="./img/icon-paper.svg" alt="">
       </div>
