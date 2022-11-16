@@ -8,9 +8,9 @@
 <template>
     <div class="opponent-pick">
         <h3>OPPONENT'S PICK</h3>
-        <Choice choice="/src/img/icon-paper.svg" style="border: 15px solid #2ce014" v-if="opponentPick === 'paper'" />
-        <Choice choice="/src/img/icon-rock.svg" style="border: 15px solid #ffd70d" v-if="opponentPick === 'rock'" />
-        <Choice choice="/src/img/icon-scissors.svg" style="border: 15px solid red" v-if="opponentPick === 'scissors'" />
+        <Choice choice="https://i.imgur.com/B9bhcFt.png" style="border: 15px solid #2ce014" v-if="opponentPick === 'paper'" />
+        <Choice choice="https://i.imgur.com/hYMBReL.png" style="border: 15px solid #ffd70d" v-if="opponentPick === 'rock'" />
+        <Choice choice="https://i.imgur.com/o41ORt9.png" style="border: 15px solid red" v-if="opponentPick === 'scissors'" />
     </div>
 </template>
 
