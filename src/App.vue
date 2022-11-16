@@ -94,20 +94,20 @@
       <h3 v-if="!isPaperPick || !isScissorsPick || !isRockPick">YOUR PICK</h3>
       <div class="first-row">
         <Choice
-          choice="/src/img/icon-paper.svg" 
+          choice="https://i.imgur.com/B9bhcFt.png" 
           @click="paperPick(), randomCompPick(), getResult()"
           :class="{'hidden': !isPaperPick}"
           style="border: 15px solid #2ce014"
         />
         <Choice
-          choice="/src/img/icon-scissors.svg"
+          choice="https://i.imgur.com/hYMBReL.png"
           @click="scissorsPick(), randomCompPick(), getResult()"
           :class="{'hidden': !isScissorsPick}"
           style="border: 15px solid red"
         />
       </div>
       <Choice
-        choice="/src/img/icon-rock.svg"
+        choice="https://i.imgur.com/o41ORt9.png"
         @click="rockPick(), randomCompPick(), getResult()"
         :class="{'hidden': !isRockPick}"
         style="border: 15px solid #ffd70d"
