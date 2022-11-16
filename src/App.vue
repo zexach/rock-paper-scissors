@@ -1,6 +1,11 @@
 <script setup>
   import { ref } from 'vue';
+  import Header from './components/Header.vue';
+  import Score from './components/Score.vue';
   import Rules from './components/Rules.vue';
+  import Choice from './components/Choice.vue';
+  import OpponentPick from './components/OpponentPick.vue';
+  import Result from './components/Result.vue';
   
   const showRules = ref(false)
   const score = ref(0)
@@ -11,7 +16,6 @@
   const myPick = ref('')
   const opponentPick = ref('')
   const result = ref('')
-  const roundFinished = ref(null)
 
   const paperPick = () => {
     isScissorsPick.value = false
@@ -71,75 +75,53 @@
       }
     }
     
-    const resetRound = () => {
-      myPick.value = null
-      opponentPick.value = null
-      isPaperPick.value = true
-      isScissorsPick.value = true
-      isRockPick.value = true
-    }
+  const resetRound = () => {
+    myPick.value = null
+    opponentPick.value = null
+    isPaperPick.value = true
+    isScissorsPick.value = true
+    isRockPick.value = true
+  }
+
   </script>
 
 <template>
   <div class="container">
     <Rules v-if="showRules" />
-    <div class="header">
-      <p class="game-name">FLI FLAJ FLUS</p>
-      <div class="score-content">
-        <p class="score-text">SCORE</p>
-        <h2 class="score-value">{{score}}</h2>
-      </div>
-    </div>
-    <div class="rock-paper-scissors" :disabled="showRules">
+    <Header name="FLI FLAJ FLUS" />
+    <Score :score="score" />
+    <div class="rock-paper-scissors">
       <h3 v-if="!isPaperPick || !isScissorsPick || !isRockPick">YOUR PICK</h3>
-      <div class="first-column">
-        <div @click="paperPick(), randomCompPick(), getResult()" :class="{'hidden': !isPaperPick}" :disabled="isPaperPick" class="circle paper">
-          <img src="./img/icon-paper.svg" alt="">
-        </div>
-        <div @click="scissorsPick(), randomCompPick(), getResult()" :class="{'hidden': !isScissorsPick}" class="circle scissors">
-          <img src="./img/icon-scissors.svg" alt="">
+      <div class="first-row">
+        <Choice
+          choice="/src/img/icon-paper.svg" 
+          @click="paperPick(), randomCompPick(), getResult()"
+          :class="{'hidden': !isPaperPick}"
+          style="border: 15px solid #2ce014"
+        />
+        <Choice
+          choice="/src/img/icon-scissors.svg"
+          @click="scissorsPick(), randomCompPick(), getResult()"
+          :class="{'hidden': !isScissorsPick}"
+          style="border: 15px solid red"
+        />
       </div>
-      </div>
-      <div @click="rockPick(), randomCompPick(), getResult()" :class="{'hidden': !isRockPick}" class="circle rock">
-        <img src="./img/icon-rock.svg" alt="">
-      </div>
+      <Choice
+        choice="/src/img/icon-rock.svg"
+        @click="rockPick(), randomCompPick(), getResult()"
+        :class="{'hidden': !isRockPick}"
+        style="border: 15px solid #ffd70d"
+      />
     </div>
-    <div v-if="!isPaperPick || !isScissorsPick || !isRockPick" class="opponent-pick">
-      <h3>OPPONENT'S PICK</h3>
-      <div v-if="opponentPick === 'paper'" class="circle paper">
-        <img src="./img/icon-paper.svg" alt="">
-      </div>
-      <div v-if="opponentPick === 'scissors'" class="circle scissors">
-        <img src="./img/icon-scissors.svg" alt="">
-      </div>
-      <div v-if="opponentPick === 'rock'" class="circle rock">
-        <img src="./img/icon-rock.svg" alt="">
-      </div>
-    </div>
-    <div class="result" v-if="myPick != null">
-      <h1 class="result">{{result}}</h1>
-      <button class="result-btn" v-if="!isPaperPick || !isScissorsPick || !isRockPick" @click="resetRound">PLAY AGAIN</button>
-    </div>
-    <div class="rules">
-      <button @click="showRules = !showRules">{{showRules ? 'CLOSE RULES' : 'RULES'}}</button>
-    </div>
+    <OpponentPick :opponentPick="opponentPick" v-if="!isPaperPick || !isScissorsPick || !isRockPick" />
+    <Result :result="result" v-if="myPick != null" />
+    <button class="result-btn" v-if="!isPaperPick || !isScissorsPick || !isRockPick" @click="resetRound">PLAY AGAIN</button>
+    <button @click="showRules = !showRules">{{showRules ? 'CLOSE RULES' : 'RULES'}}</button>
   </div>
 </template>
 
 <style scoped>
-  .first-column{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  .result{
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-   .container{
+  .container{
     width: 100%;
     height: 100vh;
     display: flex;
@@ -147,41 +129,8 @@
     justify-content: space-around;
     align-items: center;
     position: relative;
-   }
-   .header{
-    width: 80%;
-    padding: 5px 15px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    border:  2px solid rgb(208, 208, 208);
-    border-radius: 5px;
-   }
-   .game-name{
-    width: 10%;
-    line-height: 17px;
-    font-size: 20px;
-    font-weight: 600;
-   }
-   .score-content{
-    padding: 5px 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    color: black;
-    background-color: white;
-   }
-   .score-text{
-    font-weight: 500;
-   }
-   .score-value{
-    font-size: 30px;
-    font-weight: 700;
-   }
-   .rock-paper-scissors{
+  }
+  .rock-paper-scissors{
     width: 100%;
     min-height: 200px;
     display: flex; 
@@ -189,12 +138,12 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-   }
-   .result{
-    font-size: 30px;
-    font-weight: 700;
-   }
-   .result-btn{
+  }
+  .first-row{
+    display: flex;
+    flex-direction: row;
+  }
+  .result-btn{
     width: 200px;
     padding: 15px;
     background-color: white;
@@ -205,57 +154,20 @@
     font-weight: 600;
     cursor: pointer;
     transition: 0.4s;
-   }
-   .result-btn:hover{
-    width: 250px;
-    padding: 20px;
+  }
+  .result-btn:hover{
     background-color: transparent;
     color: white;
-   }
+  }
+
    h3{
     font-weight: 700;
    }
-   .circle{
-     width: 120px;
-     height: 120px;
-     margin: 25px 25px;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     border-radius: 50%;
-     background-color: rgb(235, 235, 235);
-     cursor: pointer;
-     transition: 0.3s;
-     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
-    .opponent-pick{
-     display: flex;
-     flex-direction: column-reverse;
-     align-items: center;
-    }
-    .circle:hover{
-    width: 150px;
-    height: 150px;
-   }
-   .rock{
-    border: 10px solid rgb(246, 67, 67)
-   }
-   .paper{
-    border: 10px solid rgb(30, 189, 216)
-   }
-   .scissors{
-    border: 10px solid rgb(251, 188, 52)
-  }
-   .hidden{
+
+  .hidden{
     display: none;
   } 
-   .rules{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-   }
-   button{
+  button{
     width: 120px;
     padding: 10px;
     background-color: transparent;
@@ -265,23 +177,9 @@
     cursor: pointer;
     transition: 0.4s;
     font-weight: 600;
-   }
-   button:hover{
-    width: 160px;
+  }
+  button:hover{
     background-color: white;
     color: black
-   }
-   @media screen and (min-width: 860px) {
-    .circle{
-     width: 180px;
-     height: 180px;
-    }
-    .circle:hover{
-    width: 220px;
-    height: 220px;
-   }
-   img{
-    width: 80px;
-   }
   }
 </style>

@@ -8,7 +8,7 @@
 <style scoped>
     .rules-container{
         width: 500px;
-        height: 520px;
+        height: 600px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -20,7 +20,7 @@
         font-size: 15px;
         position: absolute;
         z-index: 1;
-        }
+    }
     h1{
         font-size: 40px;
         font-weight: 600;
@@ -32,7 +32,7 @@
     @media screen and (max-width: 500px) {
         .rules-container{
             width: 340px;
-            height: 520px;
+            height: 600px;
         }
     }
 </style>
